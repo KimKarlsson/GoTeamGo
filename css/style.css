@@ -1,27 +1,172 @@
 body {
-	background: #ccab91;
+	background: #092c48;
+	background-image: url("../img/sea.jpg");
+	background-size: cover;
+	/*background-attachment: fixed;*/
+	background-repeat: no-repeat;
+}
+
+#logo {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+}
+
+#container {
+    width: auto;
+    height: auto;
+}
+
+#content {
+    padding-top: 25px;
+    height: 1200px;
+    width: 525px;
+    margin: auto;
+}
+
+.square:hover{
+    opacity: 0.5;
 }
 
 .square{
-    /*display: inline; */
     /*width: 50px;
     height: 50px;*/
-    background-color: rgb(150,150,200);
-    /*border-style: 1px solid black;*/
-    /*float: left;*/
+    background-color: #1973be;
     border: 1px solid black;
 }
 
 .row {
     float: left;
-    /*max-width: 500px;*/
-    
 }
 
 .button{
-	width: 50px;
-	height: 50px;
-	background-color: rgb(150,150,200);
-	
-	
+	width: 25px;
+	height: 25px; 
+	visibility: hidden;
+}
+    
+
+input[type="radio"]:checked{
+    background: #5BC0DE;
+}
+
+#newGame {
+    position:relative;
+    left: 60px;
+    bottom: 10px;
+    
+}
+.boatsMenu {
+    width: 200px;
+    height: auto;
+    position: absolute;
+    right: 30px;
+    top: 607px;
+    border-radius: 15px;
+    background-color: rgba(80,90,130, 0.8);
+    box-shadow: 2px 2px 15px 2px;
+}
+
+.gameStart {
+    width: 200px;
+    height: auto;
+    position: absolute;
+    right: 30px;
+    top: 177px;
+    border-radius: 15px;
+    background-color: rgba(80,90,130, 0.8);
+    box-shadow: 2px 2px 15px 2px;
+}
+#boatlist {
+    
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 10px;
+    
+}
+
+
+#rotate {
+    display: none;
+    
+}
+#rotate:checked + label > img {
+    transform: rotate(90deg);
+    
+}
+#rotateimg:hover {
+    box-shadow: 0px 0px 5px 3px inset;
+    border-radius: 15px;
+    color: #28326E;
+}
+#boat1 {
+    display:none;
+}
+#boat2 {
+    display:none;
+}
+#boat3 {
+    display:none;
+}
+#boat4 {
+    display:none;
+}
+#boat5 {
+    display:none;
+}
+.boat:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 3px inset;
+    border-radius: 15px;
+    color: #28326E;
+}
+
+h3 {
+    text-align: center;
+    font-family: cursive;
+    text-shadow: 1px 1px #A0B4C8;
+}
+
+
+
+.vertical {
+    transform: rotate(270deg);
+    transform-origin: left top 0;
+   color: #eadbfa;
+   text-shadow: 2px 2px black;
+    
+}
+
+#enemyboardText{
+    font-family: cursive;
+    position: absolute;
+    margin-top: 350px;
+    margin-left: 70px;
+}
+
+#playerboardText{
+    font-family: cursive;
+        position: absolute;
+    margin-top: 925px;
+    margin-left: 70px;
+   
+}
+
+#cpufield {
+    width: 525px;
+    height: 510px;
+    border: solid 17px black;
+    border-radius: 15px;
+    border-style: outset;
+    cursor: crosshair;
+}
+
+#playerfield {
+    margin-top: 30px;
+    width: 525px;
+    height: 510px;
+    border: solid 17px black;
+    border-radius: 15px;
+    border-style: outset;
 }

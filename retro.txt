@@ -1,0 +1,17 @@
+Retrospective - Lets look at what we have done and what can be improved.
+
+Positives:
++ Bättre beräknad velocity 
++ Kommunikationen
++ Bra uppdelade tasks
+
+Negatives:
+- Kunskap inom JavaScript/spel
+- En man kort
+- 
+
+
+Ideas of improvement:
+- Hålla tiderna lite bättre
+- Bli bättre på att uppskatta vad saker tar
+- Fler på JavaScript?
