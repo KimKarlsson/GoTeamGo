@@ -1,6 +1,6 @@
 body {
 	background: #092c48;
-	background-image: url("../img/sea.jpg");
+	background-image: url("../img/ocean4.jpg");
 	background-size: cover;
 	/*background-attachment: fixed;*/
 	background-repeat: no-repeat;
@@ -25,7 +25,8 @@ body {
 }
 
 .square:hover{
-    opacity: 0.5;
+    
+    background-color: #002C58;
 }
 
 .square{
@@ -33,6 +34,7 @@ body {
     height: 50px;*/
     background-color: #1973be;
     border: 1px solid black;
+    
 }
 
 .row {
@@ -124,7 +126,7 @@ input[type="radio"]:checked{
 
 h3 {
     text-align: center;
-    font-family: cursive;
+    font-family: Verdana, sans-serif;
     text-shadow: 1px 1px #A0B4C8;
 }
 
@@ -139,15 +141,15 @@ h3 {
 }
 
 #enemyboardText{
-    font-family: cursive;
+    font-family: Verdana, sans-serif;
     position: absolute;
     margin-top: 350px;
     margin-left: 70px;
 }
 
 #playerboardText{
-    font-family: cursive;
-        position: absolute;
+    font-family: Verdana, sans-serif;
+    position: absolute;
     margin-top: 925px;
     margin-left: 70px;
    
@@ -169,4 +171,11 @@ h3 {
     border: solid 17px black;
     border-radius: 15px;
     border-style: outset;
+}
+#reklam
+{
+
+    width: 50%;
+    height: 100px;
+    padding-left: 25%
 }

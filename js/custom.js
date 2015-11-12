@@ -14,8 +14,20 @@ window.onload = function() {
     var vertical = true;
     var playerPlacedBoats = [undefined]
     var isArrayEmpty = true;
-
-
+    var playerBoatCounter = 0;
+    var cpuShootingArray = [];
+    var audio = new Audio('audio/explosion.mp3'); //sound hit
+    var audio2 = new Audio('audio/splash.wav');     //sound miss
+    var audio3 = new Audio('audio/sunk.mp3');           //sound ship sunk
+    var boat1 = [];
+    var boat2 = [];
+    var boat3 = [];
+    var boat4 = [];
+    var boat5 = [];
+    var cpuCantShootHere = [];
+    var playerBoatsSunk = [boat1, boat2, boat3, boat4, boat5];
+    var cpuShotsFired = false;
+    
     // GENERATE FIELDS
     // PLAYER FIELD
     for (var i = 0; i < numbers.length; i++) {
@@ -25,6 +37,7 @@ window.onload = function() {
 
         }
         playerArray.push(temp);
+        cpuShootingArray.push(temp);
 
     }
 
@@ -65,7 +78,7 @@ window.onload = function() {
     }
     cpuOutputString += "</div>";
     content.insertAdjacentHTML("afterbegin", cpuOutputString);
-
+    var cpuField = document.getElementById("cpufield");
     // ^GENERATE FIELDS^
 
 
@@ -74,8 +87,122 @@ window.onload = function() {
 
     //CPU RANDOM POSITION PICK
     function cpuRandomPick() {
-        var cpurandomArray = Math.floor(Math.random() * cpuArray.length);
-        var cpuRandomNumber = Math.floor(Math.random() * cpuArray[cpurandomArray].length);
+
+        for (var i = 0; i < 5; i++) {
+            var cpurandomArray = Math.floor(Math.random() * cpuArray.length);
+            var cpuRandomNumber = Math.floor(Math.random() * cpuArray[cpurandomArray].length);
+
+            // cpuArray[cpurandomArray][cpuRandomNumber];
+
+            //console.log(cpuArray[cpurandomArray][cpuRandomNumber]);
+
+            // Check for before && after, vertically and horizontally
+
+
+
+            var passed = 0;
+
+            if ($.inArray(cpuArray[cpurandomArray][cpuRandomNumber], cpuUsedPos) === -1)
+                passed++;
+
+            var orientation = Math.random();
+            console.log("Orientation: " + orientation);
+
+            console.log("Click: " + cpuArray[cpurandomArray][cpuRandomNumber]);
+
+            if (orientation > 0.5) {
+                
+                console.log("Orientation is over 0.5");
+                
+                console.log(parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1)));
+                
+                var tempLetter = String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) - 1) + parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1));
+
+                if ($.inArray(tempLetter, cpuUsedPos) === -1)
+                    passed++;
+
+                tempLetter = String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) + 1) + parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1));
+
+                if ($.inArray(tempLetter, cpuUsedPos) === -1)
+                    passed++;
+            }
+            else {
+                
+                console.log("Orientation is below 0.5");
+                var tempNumber = parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1)) + 1;
+
+                if ($.inArray(tempNumber, cpuUsedPos) === -1)
+                    passed++;
+
+                var tempNumber = parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1)) - 1;
+
+                if ($.inArray(tempNumber, cpuUsedPos) === -1)
+                    passed++;
+            }
+
+            //console.log(passed);
+            
+            if (passed === 3) {
+                var temp = cpuArray[cpurandomArray][cpuRandomNumber];
+                
+                cpuUsedPos.push("cpu" + temp);
+
+                console.log("Checking orientation before pushing");
+
+                if (orientation > 0.5) {
+                    /*
+                    cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) + parseInt(temp.substr(1, temp.length - 1)) - 1));
+                    cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) + parseInt(temp.substr(1, temp.length - 1)) + 1));
+                    */
+                    cpuUsedPos.push("cpu" + temp.charAt(0) + (parseInt(temp.substr(1), 10) + 1));
+                    cpuUsedPos.push("cpu" + temp.charAt(0) + (parseInt(temp.substr(1), 10) - 1));
+                }
+                else {
+                    // cpuUsedPos.push("cpu" + String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) + 1) + cpuArray[cpurandomArray][cpuRandomNumber].substr(1, cpuArray[cpurandomArray][cpuRandomNumber].length - 1));
+                    // cpuUsedPos.push("cpu" + String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) - 1) + cpuArray[cpurandomArray][cpuRandomNumber].substr(1, cpuArray[cpurandomArray][cpuRandomNumber].length - 1));
+                
+                    cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) + 1) + temp.substr(1));
+                    cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) - 1) + temp.substr(1));
+                    /*
+                    cpuUsedPos.push(
+                        "cpu" + String.fromCharCode(temp.charCodeAt(0) + 1
+                        + temp.substr(1)
+                        )
+                    );
+                    
+                    cpuUsedPos.push(
+                        "cpu" + String.fromCharCode(temp.charCodeAt(0) - 1
+                        + temp.substr(1)
+                        )
+                    );
+                    */
+                }
+            }
+            else {
+                i--;
+            }
+
+            console.log(cpuUsedPos);
+        }
+
+        /*
+        if ( $.inArray( cpuArray[cpurandomArray][cpuRandomNumber], cpuUsedPos ) !== -1)
+        {
+            var tempValue = Math.floor(Math.random());
+            cpuUsedPos.push( cpuArray[cpurandomArray][cpuRandomNumber] );
+        }
+        else
+        {
+            // Re-run function
+            cpuRandomPick();
+            return;
+        }
+        */
+
+
+
+        // cpuUsedPos.push( cpuArray[cpurandomArray][cpuRandomNumber] );
+
         /*if(cpuUsedPos !== []){
         for(var i = 0; i< cpuUsedPos.length; i++){
             if(cpuUsedPos[i] == cpuArray[cpurandomArray][cpuRandomNumber]){
@@ -91,7 +218,14 @@ window.onload = function() {
         cpuUsedPos.push(cpuArray[cpurandomArray][cpuRandomNumber]);
         console.log(cpuUsedPos);*/
     }
+
     cpuRandomPick();
+
+    $("#cpuRandomPick").click(function() {
+
+        cpuRandomPick();
+
+    });
 
     /*function hovertest(ev){
         var target = $(ev.target);
@@ -128,11 +262,90 @@ window.onload = function() {
 
 
 
+    cpuField.addEventListener("mousedown", function(e) {
+        var target = $(e.target);
+        if (target.attr("class") == "square") /*(och det är spelarens tur?)*/ {
+            for (var i = 0; i < cpuUsedPos.length; i++) { //cpuboatsarray är cpun's utplacerade båtar i en array
+                if ($.inArray(target.attr("id"), cpuUsedPos) !== -1) {
+                    target.css("background-image", "url('../img/hit.gif')");
+                    audio.play();
+                }
+                else {
+                    target.css("background-image", "url('../img/miss.gif')");
+                    audio2.play();
+                }
+
+            }
+            console.log(target.attr("id"));
+        }
+         // $("html, body").animate({ scrollTop: ($(document).height() -800)  }, 1000);
+          //setTimeout(function(){
+        cpuShot();
+          //}, 15);
+    });
+
+
+
+
+    function cpuShot() {
+        cpuShotsFired = false;
+        while(cpuShotsFired === false){
+        var cpurandomArray = Math.floor(Math.random() * cpuShootingArray.length);
+        var cpuRandomNumber = Math.floor(Math.random() * cpuShootingArray[cpurandomArray].length);
+        if($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], cpuCantShootHere) == -1){
+        cpuCantShootHere.push(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+        console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+        if ($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], playerPlacedBoats) !== -1) {
+            console.log("hit!");
+                    $("#"+cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
+                    audio.play();
+                    for(var i=0; i<playerBoatsSunk.length; i++){
+                        //console.log("inside i");
+                        for(var j=0; j<playerBoatsSunk[i].length; j++){
+                            //console.log("inside j");
+                            //console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+                            //console.log(playerBoatsSunk[i][j]);
+                        if(cpuShootingArray[cpurandomArray][cpuRandomNumber] == playerBoatsSunk[i][j]){
+                            //console.log(removeThisIndex);
+                           // audio4.play();
+                            alert("Nice hit!");
+                            
+                            //console.log(playerBoatsSunk[i][j]);
+                            //console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+                            playerBoatsSunk[i][3] -= 1;
+                            if(playerBoatsSunk[i][3] === 0){
+                                audio3.play();
+                                alert("You sunk my boat!");
+                            }
+                            else{
+                            //alert(playerBoatsSunk[i])
+                            }
+                        }
+                            
+                        }
+                    }
+        }
+                else {
+                    $("#"+cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/miss.gif')");
+                    audio2.play();
+                }
+        //$(playerArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
+        /*for(var i=0; i<cpuShootingArray.length; i++){
+            $(playerArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
+            
+        }*/
+        cpuShotsFired = true;
+        }
+        }
+    }
+
+
 
 
     playerField.addEventListener("mousedown", function(e) {
+        //LOGIK FÖR ATT SPELARE SKA PLACERA BÅT
         var target = $(e.target);
-        if (target.attr("class") == "square") {
+        if (target.attr("class") == "square" && playerBoatCounter < 5) {
             for (var i = 0; i < playerArray.length; i++) {
                 if (((playerArray[i].indexOf(target.attr("id"))) >= 0)) {
 
@@ -146,9 +359,9 @@ window.onload = function() {
                         var elementOfOneUp = document.getElementById(playerArray[i][oneUp]);
                         console.log(playerArray[i][originalPos]);
                         if (($.inArray(playerArray[i][originalPos], playerPlacedBoats) !== -1 ||
-                            $.inArray(playerArray[i][oneDown], playerPlacedBoats) !== -1 ||
-                            $.inArray(playerArray[i][oneUp], playerPlacedBoats) !== -1) &&
-                            (playerArray[i][originalPos] !== undefined || playerArray[i][oneDown] !== undefined || playerArray[i][oneUp] !== undefined)){
+                                $.inArray(playerArray[i][oneDown], playerPlacedBoats) !== -1 ||
+                                $.inArray(playerArray[i][oneUp], playerPlacedBoats) !== -1) &&
+                            (playerArray[i][originalPos] !== undefined || playerArray[i][oneDown] !== undefined || playerArray[i][oneUp] !== undefined)) {
                             alert("ERROR: overlapping or outside the field!☻");
                         }
                         else {
@@ -160,27 +373,74 @@ window.onload = function() {
                             target.css("transform", "rotate(90deg)");
                             playerPlacedBoats.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos]);
                             console.log(playerPlacedBoats);
+                            
+                            
+                            switch(playerBoatCounter){
+                                case 0:
+                                    boat1.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
+                                break;
+                                case 1:
+                                    boat2.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
+                                break;
+                                case 2:
+                                    boat3.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
+                                break;
+                                case 3:
+                                    boat4.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
+                                break;
+                                case 4:
+                                    boat5.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
+                                break;
+                                default:
+                                console.log("ERROR");
+                                break;
+                            }
+                            playerBoatCounter += 1;
+                            console.log(boat1, boat2, boat3, boat3, boat4, boat5);
                         }
                     }
                     else {
                         var originalPos = playerArray[i].indexOf(target.attr("id"));
-                        if((playerArray[i] !== undefined && playerArray[i - 1] !== undefined && playerArray[i + 1] !== undefined)){
-                        var elementOfOneRight = document.getElementById(playerArray[i + 1][originalPos]);
-                        var elementOfOneLeft = document.getElementById(playerArray[i - 1][originalPos]);
-                        if ($.inArray(playerArray[i + 1][originalPos], playerPlacedBoats) !== -1 ||
-                            $.inArray(playerArray[i - 1][originalPos], playerPlacedBoats) !== -1 ||
-                            $.inArray(playerArray[i][originalPos], playerPlacedBoats) !== -1){
-                            alert("ERROR: overlapping or outside the field!☻");
+                        if ((playerArray[i] !== undefined && playerArray[i - 1] !== undefined && playerArray[i + 1] !== undefined)) {
+                            var elementOfOneRight = document.getElementById(playerArray[i + 1][originalPos]);
+                            var elementOfOneLeft = document.getElementById(playerArray[i - 1][originalPos]);
+                            if ($.inArray(playerArray[i + 1][originalPos], playerPlacedBoats) !== -1 ||
+                                $.inArray(playerArray[i - 1][originalPos], playerPlacedBoats) !== -1 ||
+                                $.inArray(playerArray[i][originalPos], playerPlacedBoats) !== -1) {
+                                alert("ERROR: overlapping or outside the field!☻");
+                            }
+                            else {
+                                target.css("background-image", "url('../img/mid.gif')");
+                                $(elementOfOneRight).css("background-image", "url('../img/akter.gif')");
+                                $(elementOfOneLeft).css("background-image", "url('../img/for.gif')");
+                                playerPlacedBoats.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos]);
+                                console.log(playerPlacedBoats);
+                                
+                                
+                                switch(playerBoatCounter){
+                                case 0:
+                                    boat1.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                break;
+                                case 1:
+                                    boat2.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                break;
+                                case 2:
+                                    boat3.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                break;
+                                case 3:
+                                    boat4.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                break;
+                                case 4:
+                                    boat5.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                break;
+                                default:
+                                console.log("ERROR");
+                                break;
+                            }
+                            playerBoatCounter += 1;
+                            }
                         }
                         else {
-                            target.css("background-image", "url('../img/mid.gif')");
-                            $(elementOfOneRight).css("background-image", "url('../img/akter.gif')");
-                            $(elementOfOneLeft).css("background-image", "url('../img/for.gif')");
-                            playerPlacedBoats.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos]);
-                            console.log(playerPlacedBoats);
-                        }
-                        }
-                        else{
                             alert("ERROR: overlapping or outside the field!☻");
                         }
                     }
@@ -188,13 +448,7 @@ window.onload = function() {
             }
 
         }
-
-        //console.log(target.attr("id")[0]+target.attr("id")[1]);
-
-        //var second = document.getElementById(playerArray[])
-
-
-        //target.css("opacity", "0.5");
+        //LOGIK FÖR ATT SPELARE SKA PLACERA BÅT^
 
 
     });

@@ -13,8 +13,12 @@
 <body>
     <!-- content -->
     <div id="container">
+        <div id="header">
+            <div class="reklam">
+            </div>
+        </div>
         <div id="logo"><img id="logo" src="../img/lowership2.gif"></div>
-        <div id="enemyboardText">                  
+        <div id="enemyboardText">
             <h1 class="vertical">Enemy Board</h1>
         </div>
         <div id="playerboardText">
@@ -23,55 +27,78 @@
         <div class="gameStart">
             <h3>Lower the ship</h3>
             <FORM>
-            <INPUT TYPE="button" id="newGame" onClick="history.go(0)" VALUE="New Game">
+                <INPUT TYPE="button" id="newGame" onClick="history.go(0)" VALUE="New Game">
             </FORM>
         </div>
         <div class="boatsMenu">
-                <h3>Select Boats:</h3>
-                <table id="boatlist">
+            <h3>Select Boats:</h3>
+            <table id="boatlist">
                 <tr>
-                    <td><input name="boatselect" type="radio" id="boat1"/></td>
-                    <td><label for="boat1"><img class="boat" src="../img/2boat.gif" /></label></td>
+                    <td>
+                        <input name="boatselect" type="radio" id="boat1" />
+                    </td>
+                    <td>
+                        <label for="boat1"><img class="boat" src="../img/3boat.gif" /></label>
+                    </td>
                 </tr>
                 <tr>
-                    <td><input name="boatselect" type="radio" id="boat2"/></td>
-                    <td><label for="boat2"><img class="boat" src="../img/2boat.gif" /></label></td>
+                    <td>
+                        <input name="boatselect" type="radio" id="boat2" />
+                    </td>
+                    <td>
+                        <label for="boat2"><img class="boat" src="../img/3boat.gif" /></label>
+                    </td>
                 </tr>
                 <tr>
-                    <td><input name="boatselect" type="radio" id="boat3"/></td>
-                    <td><label for="boat3"><img class="boat" src="../img/3boat.gif" /></label></td>
+                    <td>
+                        <input name="boatselect" type="radio" id="boat3" />
+                    </td>
+                    <td>
+                        <label for="boat3"><img class="boat" src="../img/3boat.gif" /></label>
+                    </td>
                 </tr>
                 <tr>
-                    <td><input name="boatselect" type="radio" id="boat4"/></td>
-                    <td><label for="boat4"><img class="boat" src="../img/3boat.gif" /></label></td>
+                    <td>
+                        <input name="boatselect" type="radio" id="boat4" />
+                    </td>
+                    <td>
+                        <label for="boat4"><img class="boat" src="../img/3boat.gif" /></label>
+                    </td>
                 </tr>
                 <tr>
-                    <td><input name="boatselect" type="radio" id="boat5"/></td>
-                    <td><label for="boat5"><img class="boat" src="../img/3boat.gif" /></label></td>
+                    <td>
+                        <input name="boatselect" type="radio" id="boat5" />
+                    </td>
+                    <td>
+                        <label for="boat5"><img class="boat" src="../img/3boat.gif" /></label>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input name="boatselect" type="checkbox"  id="rotate" checked/>
-                    <label for="rotate"><img id="rotateimg" src="../img/arrow.gif"></label>
+                    <td>
+                        <input name="boatselect" type="checkbox" id="rotate" checked/>
+                        <label for="rotate"><img id="rotateimg" src="../img/arrow.gif"></label>
                     </td>
-                    
+
                 </tr>
-                </table>
-                <!-- Här är delarna som klipps ihop till båten!
+            </table>
+            <!-- Här är delarna som klipps ihop till båten!
                 <img src="../img/for.gif">
                 <img src="../img/mid.gif">
                 <img src="../img/akter.gif">-->
-                
+
         </div>
         <div id="content">
-            
+            <!--<div class="reklam">-->
+            </div>
         </div>
-        
     </div>
-    
-     
-    
     <!-- content end-->
+    <footer>
+        <div>
+           
+        </div>
+    </footer>
     <!--JS-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="js/custom.js"></script>
