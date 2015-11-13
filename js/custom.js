@@ -17,8 +17,11 @@ window.onload = function() {
     var playerBoatCounter = 0;
     var cpuShootingArray = [];
     var audio = new Audio('audio/explosion.mp3'); //sound hit
-    var audio2 = new Audio('audio/splash.wav');     //sound miss
-    var audio3 = new Audio('audio/sunk.mp3');           //sound ship sunk
+    var audio2 = new Audio('audio/splash.wav'); //sound miss
+    var audio3 = new Audio('audio/sunk.mp3'); //sound ship sunk
+    var audio10 = new Audio('audio/splash2.wav');
+    //var audio4 = new Audio('audio/'); //--not used--
+    var audio5 = new Audio('audio/gameover.mp3'); //Sound game over 
     var boat1 = [];
     var boat2 = [];
     var boat3 = [];
@@ -27,7 +30,8 @@ window.onload = function() {
     var cpuCantShootHere = [];
     var playerBoatsSunk = [boat1, boat2, boat3, boat4, boat5];
     var cpuShotsFired = false;
-    
+    var playerLostCounter = 0;
+     var animateBool = false;
     // GENERATE FIELDS
     // PLAYER FIELD
     for (var i = 0; i < numbers.length; i++) {
@@ -40,8 +44,6 @@ window.onload = function() {
         cpuShootingArray.push(temp);
 
     }
-
-
 
     console.log(playerArray);
 
@@ -81,10 +83,6 @@ window.onload = function() {
     var cpuField = document.getElementById("cpufield");
     // ^GENERATE FIELDS^
 
-
-
-
-
     //CPU RANDOM POSITION PICK
     function cpuRandomPick() {
 
@@ -97,9 +95,6 @@ window.onload = function() {
             //console.log(cpuArray[cpurandomArray][cpuRandomNumber]);
 
             // Check for before && after, vertically and horizontally
-
-
-
             var passed = 0;
 
             if ($.inArray(cpuArray[cpurandomArray][cpuRandomNumber], cpuUsedPos) === -1)
@@ -111,11 +106,11 @@ window.onload = function() {
             console.log("Click: " + cpuArray[cpurandomArray][cpuRandomNumber]);
 
             if (orientation > 0.5) {
-                
+
                 console.log("Orientation is over 0.5");
-                
+
                 console.log(parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1)));
-                
+
                 var tempLetter = String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) - 1) + parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1));
 
                 if ($.inArray(tempLetter, cpuUsedPos) === -1)
@@ -127,7 +122,7 @@ window.onload = function() {
                     passed++;
             }
             else {
-                
+
                 console.log("Orientation is below 0.5");
                 var tempNumber = parseInt(cpuArray[cpurandomArray][cpuRandomNumber].substr(1)) + 1;
 
@@ -141,10 +136,10 @@ window.onload = function() {
             }
 
             //console.log(passed);
-            
+
             if (passed === 3) {
                 var temp = cpuArray[cpurandomArray][cpuRandomNumber];
-                
+
                 cpuUsedPos.push("cpu" + temp);
 
                 console.log("Checking orientation before pushing");
@@ -160,22 +155,9 @@ window.onload = function() {
                 else {
                     // cpuUsedPos.push("cpu" + String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) + 1) + cpuArray[cpurandomArray][cpuRandomNumber].substr(1, cpuArray[cpurandomArray][cpuRandomNumber].length - 1));
                     // cpuUsedPos.push("cpu" + String.fromCharCode(cpuArray[cpurandomArray][cpuRandomNumber].charCodeAt(0) - 1) + cpuArray[cpurandomArray][cpuRandomNumber].substr(1, cpuArray[cpurandomArray][cpuRandomNumber].length - 1));
-                
+
                     cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) + 1) + temp.substr(1));
                     cpuUsedPos.push("cpu" + String.fromCharCode(temp.charCodeAt(0) - 1) + temp.substr(1));
-                    /*
-                    cpuUsedPos.push(
-                        "cpu" + String.fromCharCode(temp.charCodeAt(0) + 1
-                        + temp.substr(1)
-                        )
-                    );
-                    
-                    cpuUsedPos.push(
-                        "cpu" + String.fromCharCode(temp.charCodeAt(0) - 1
-                        + temp.substr(1)
-                        )
-                    );
-                    */
                 }
             }
             else {
@@ -184,39 +166,6 @@ window.onload = function() {
 
             console.log(cpuUsedPos);
         }
-
-        /*
-        if ( $.inArray( cpuArray[cpurandomArray][cpuRandomNumber], cpuUsedPos ) !== -1)
-        {
-            var tempValue = Math.floor(Math.random());
-            cpuUsedPos.push( cpuArray[cpurandomArray][cpuRandomNumber] );
-        }
-        else
-        {
-            // Re-run function
-            cpuRandomPick();
-            return;
-        }
-        */
-
-
-
-        // cpuUsedPos.push( cpuArray[cpurandomArray][cpuRandomNumber] );
-
-        /*if(cpuUsedPos !== []){
-        for(var i = 0; i< cpuUsedPos.length; i++){
-            if(cpuUsedPos[i] == cpuArray[cpurandomArray][cpuRandomNumber]){
-                
-            }
-        }
-        else{
-           cpuUsedPos.push(cpuArray[cpurandomArray][cpuRandomNumber]);
-        }
-        }
-    }*/
-        /*console.log(cpuArray[cpurandomArray][cpuRandomNumber]);
-        cpuUsedPos.push(cpuArray[cpurandomArray][cpuRandomNumber]);
-        console.log(cpuUsedPos);*/
     }
 
     cpuRandomPick();
@@ -227,120 +176,119 @@ window.onload = function() {
 
     });
 
-    /*function hovertest(ev){
-        var target = $(ev.target);
-    }*/
-
-
-
-    /*
-    // If a square 
-    $('.square').click(function() {
-
-        // If the current id exists in array
-        if ($.inArray($(this).attr("id"), playerArray))
-        {
-            if (vertical === true)
-            {
-
-            }
-            else
-            {
-                if ($(this).prev().attr("id")[1] !== 0 || $(this).next().attr("id")[1] !== 9)
-                {
-                    $(this).prev().css("opacity", "0.5");
-                    $(this).next().css("opacity", "0.5");
-                }
-                else
-                {
-                    // Out of bounds
-                }
-            }
-        }
-    });
-    */
-
-
-
     cpuField.addEventListener("mousedown", function(e) {
+        animateBool = false;
         var target = $(e.target);
         if (target.attr("class") == "square") /*(och det är spelarens tur?)*/ {
             for (var i = 0; i < cpuUsedPos.length; i++) { //cpuboatsarray är cpun's utplacerade båtar i en array
-                if ($.inArray(target.attr("id"), cpuUsedPos) !== -1) {
-                    target.css("background-image", "url('../img/hit.gif')");
-                    audio.play();
+                if ($.inArray(target.attr("id"), cpuUsedPos) !== -1 && animateBool == false) {
+                    animateBall(e, target, "hit");
+                    console.log("test")
+                    animateBool = true;
                 }
-                else {
-                    target.css("background-image", "url('../img/miss.gif')");
-                    audio2.play();
+                else if(animateBool == false) {
+                    animateBall(e, target, "miss");
+                    
+                    console.log("test2");
+                    animateBool = true;
                 }
 
             }
             console.log(target.attr("id"));
         }
-         // $("html, body").animate({ scrollTop: ($(document).height() -800)  }, 1000);
-          //setTimeout(function(){
-        cpuShot();
-          //}, 15);
     });
-
-
-
+    
+    function animateBall(e, target, hitOrMiss){
+        $('#cannonball').css({top: 630, left: 230})
+        $('#cannonball').css("opacity", "1");
+        
+        $('#cannonball').animate({
+            top: e.pageY - 12,
+            left: e.pageX - 12
+            
+        }, 1000, function(){
+            $('#cannonball').css("opacity", "0");
+            if(hitOrMiss == "hit"){
+                target.css("background-image", "url('../img/hit.gif')");
+                audio.play();
+                setTimeout(function(){
+                      target.css("background-image", "url('../img/wreck.gif')");  
+                    }, 1000);
+            }
+            else{
+                
+                target.css("background-image", "url('../img/miss.gif')");
+                audio2.play()
+            }
+            setTimeout(function(){
+                      cpuShot(); 
+                    }, 1500);
+                    
+            
+        });
+    }
+    // $("html, body").animate({ scrollTop: ($(document).height() -800)  }, 1000);
+    //setTimeout(function(){
+    //}, 15);
 
     function cpuShot() {
         cpuShotsFired = false;
-        while(cpuShotsFired === false){
-        var cpurandomArray = Math.floor(Math.random() * cpuShootingArray.length);
-        var cpuRandomNumber = Math.floor(Math.random() * cpuShootingArray[cpurandomArray].length);
-        if($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], cpuCantShootHere) == -1){
-        cpuCantShootHere.push(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
-        console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
-        if ($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], playerPlacedBoats) !== -1) {
-            console.log("hit!");
-                    $("#"+cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
+        while (cpuShotsFired === false) {
+            var cpurandomArray = Math.floor(Math.random() * cpuShootingArray.length);
+            var cpuRandomNumber = Math.floor(Math.random() * cpuShootingArray[cpurandomArray].length);
+            if ($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], cpuCantShootHere) == -1) {
+                cpuCantShootHere.push(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+                console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+                if ($.inArray(cpuShootingArray[cpurandomArray][cpuRandomNumber], playerPlacedBoats) !== -1) {
+                    console.log("hit!");
+                    $("#" + cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
                     audio.play();
-                    for(var i=0; i<playerBoatsSunk.length; i++){
+                    setTimeout(function(){
+                      $("#" + cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/wreck.gif')");  
+                    }, 3000);
+                    
+                    for (var i = 0; i < playerBoatsSunk.length; i++) {
                         //console.log("inside i");
-                        for(var j=0; j<playerBoatsSunk[i].length; j++){
+                        for (var j = 0; j < playerBoatsSunk[i].length; j++) {
                             //console.log("inside j");
                             //console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
                             //console.log(playerBoatsSunk[i][j]);
-                        if(cpuShootingArray[cpurandomArray][cpuRandomNumber] == playerBoatsSunk[i][j]){
-                            //console.log(removeThisIndex);
-                           // audio4.play();
-                            alert("Nice hit!");
-                            
-                            //console.log(playerBoatsSunk[i][j]);
-                            //console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
-                            playerBoatsSunk[i][3] -= 1;
-                            if(playerBoatsSunk[i][3] === 0){
-                                audio3.play();
-                                alert("You sunk my boat!");
+                            if (cpuShootingArray[cpurandomArray][cpuRandomNumber] == playerBoatsSunk[i][j]) {
+                                //console.log(removeThisIndex);
+                                // audio4.play();
+                               
+                                playerLostCounter +=1;
+
+                                //console.log(playerBoatsSunk[i][j]);
+                                //console.log(cpuShootingArray[cpurandomArray][cpuRandomNumber]);
+                                playerBoatsSunk[i][3] -= 1;
+                                if (playerBoatsSunk[i][3] === 0) {
+                                    audio3.play();
+                                    if (playerLostCounter == 15) {
+                                        alert("Your last battleship has been sunk!")
+                                        audio5.play();
+                                    }
+                                    else {
+                                        alert("One of your battleships has been sunk!");
+                                    }
+                                }
+                                else {
+                                    //alert(playerBoatsSunk[i])
+                                }
                             }
-                            else{
-                            //alert(playerBoatsSunk[i])
-                            }
-                        }
-                            
+
                         }
                     }
-        }
-                else {
-                    $("#"+cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/miss.gif')");
-                    audio2.play();
                 }
-        //$(playerArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
-        /*for(var i=0; i<cpuShootingArray.length; i++){
-            $(playerArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/hit.gif')");
-            
-        }*/
-        cpuShotsFired = true;
-        }
+                else {
+                    $("#" + cpuShootingArray[cpurandomArray][cpuRandomNumber]).css("background-image", "url('../img/miss.gif')");
+                    audio10.play();
+                    
+                }
+                cpuShotsFired = true;
+            }
         }
     }
-
-
-
 
     playerField.addEventListener("mousedown", function(e) {
         //LOGIK FÖR ATT SPELARE SKA PLACERA BÅT
@@ -348,9 +296,6 @@ window.onload = function() {
         if (target.attr("class") == "square" && playerBoatCounter < 5) {
             for (var i = 0; i < playerArray.length; i++) {
                 if (((playerArray[i].indexOf(target.attr("id"))) >= 0)) {
-
-
-
                     if (vertical === true) {
                         var originalPos = playerArray[i].indexOf(target.attr("id"));
                         var oneUp = originalPos - 1;
@@ -373,27 +318,26 @@ window.onload = function() {
                             target.css("transform", "rotate(90deg)");
                             playerPlacedBoats.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos]);
                             console.log(playerPlacedBoats);
-                            
-                            
-                            switch(playerBoatCounter){
+
+                            switch (playerBoatCounter) {
                                 case 0:
                                     boat1.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
-                                break;
+                                    break;
                                 case 1:
                                     boat2.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
-                                break;
+                                    break;
                                 case 2:
                                     boat3.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
-                                break;
+                                    break;
                                 case 3:
                                     boat4.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
-                                break;
+                                    break;
                                 case 4:
                                     boat5.push(playerArray[i][oneDown], playerArray[i][oneUp], playerArray[i][originalPos], 3);
-                                break;
+                                    break;
                                 default:
-                                console.log("ERROR");
-                                break;
+                                    console.log("ERROR");
+                                    break;
                             }
                             playerBoatCounter += 1;
                             console.log(boat1, boat2, boat3, boat3, boat4, boat5);
@@ -415,29 +359,29 @@ window.onload = function() {
                                 $(elementOfOneLeft).css("background-image", "url('../img/for.gif')");
                                 playerPlacedBoats.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos]);
                                 console.log(playerPlacedBoats);
-                                
-                                
-                                switch(playerBoatCounter){
-                                case 0:
-                                    boat1.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
-                                break;
-                                case 1:
-                                    boat2.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
-                                break;
-                                case 2:
-                                    boat3.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
-                                break;
-                                case 3:
-                                    boat4.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
-                                break;
-                                case 4:
-                                    boat5.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
-                                break;
-                                default:
-                                console.log("ERROR");
-                                break;
-                            }
-                            playerBoatCounter += 1;
+
+
+                                switch (playerBoatCounter) {
+                                    case 0:
+                                        boat1.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                        break;
+                                    case 1:
+                                        boat2.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                        break;
+                                    case 2:
+                                        boat3.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                        break;
+                                    case 3:
+                                        boat4.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                        break;
+                                    case 4:
+                                        boat5.push(playerArray[i + 1][originalPos], playerArray[i - 1][originalPos], playerArray[i][originalPos], 3);
+                                        break;
+                                    default:
+                                        console.log("ERROR");
+                                        break;
+                                }
+                                playerBoatCounter += 1;
                             }
                         }
                         else {
@@ -448,12 +392,7 @@ window.onload = function() {
             }
 
         }
-        //LOGIK FÖR ATT SPELARE SKA PLACERA BÅT^
-
-
     });
-
-
 
     $("#rotateimg").click(function() {
         if (vertical === false) {
@@ -466,26 +405,4 @@ window.onload = function() {
         }
         console.log(vertical);
     });
-
-
-    // playerField.onmouseover = function(e) {
-    //     var target = $(e.target);
-    //     console.log(target);
-    //     var targetId = target.attr("id");
-    //     var targetClass = target.attr("class");
-    //     console.log(targetId);
-    //     if(targetClass == "square"){
-    //     target.css("opacity", "0.5");
-    //     }
-    //     playerField.onmouseleave = function(){
-    //         if(targetClass == "square"){
-    //             target.css("opacity", "1");
-    //         }
-    //     };
-    //     for (var i = 0; i < playerArray.length; i++) {
-    //         for (var j = 0; j < playerArray[i].length; j++) {
-
-    //         }
-    //     }
-    // };
 };

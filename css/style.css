@@ -179,3 +179,14 @@ h3 {
     height: 100px;
     padding-left: 25%
 }
+#cannonball {
+    position: absolute;
+    opacity: 0;
+}
+#cannon {
+    width: 180px;
+    height: 180px;
+    position: absolute;
+    top: 630px;
+    left: 100px;
+}
